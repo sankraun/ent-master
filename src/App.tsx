@@ -2,38 +2,18 @@ import { useState } from 'react';
 import { topics } from './data/notes';
 import type { TopicData, SubTopicData } from './data/notes';
 import Sidebar from './components/Sidebar';
-import SubtopicList from './components/SubtopicList';
 import TopicContent from './components/TopicContent';
-import WelcomeScreen from './components/WelcomeScreen';
 
 function App() {
-  // Start on Ear topic by default with subtopics list shown
-  const [activeTopic, setActiveTopic] = useState<TopicData | null>(
-    topics.find(t => t.id === 'ear') || topics[0]
-  );
-  const [activeSubTopic, setActiveSubTopic] = useState<SubTopicData | null>(null);
+  // Always active on Ear -> Myiasis in ENT by default
+  const [activeTopic, setActiveTopic] = useState<TopicData>(topics[0]);
+  const [activeSubTopic, setActiveSubTopic] = useState<SubTopicData>(topics[0].subtopics[0]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  const handleSelectTopic = (topic: TopicData) => {
-    setActiveTopic(topic);
-    setActiveSubTopic(null); // First show the list of subtopics!
-    setSidebarOpen(false);
-  };
 
   const handleSelectSubTopic = (topic: TopicData, subtopic: SubTopicData) => {
     setActiveTopic(topic);
     setActiveSubTopic(subtopic);
     setSidebarOpen(false);
-  };
-
-  const handleGoHome = () => {
-    setActiveTopic(null);
-    setActiveSubTopic(null);
-    setSidebarOpen(false);
-  };
-
-  const handleBackToSubTopics = () => {
-    setActiveSubTopic(null);
   };
 
   return (
@@ -44,17 +24,16 @@ function App() {
         onClick={() => setSidebarOpen(false)}
       />
 
-      {/* Sidebar */}
+      {/* Sidebar with dropdown topics */}
       <Sidebar
         topics={topics}
         activeTopic={activeTopic}
         activeSubTopic={activeSubTopic}
-        onSelectTopic={handleSelectTopic}
         onSelectSubTopic={handleSelectSubTopic}
         isOpen={sidebarOpen}
       />
 
-      {/* Main Content */}
+      {/* Main Content: Pure Study Notes / Article View */}
       <main className="main-content">
         <header className="content-header">
           <div className="content-header-left">
@@ -67,68 +46,24 @@ function App() {
               ☰
             </button>
             <div className="header-breadcrumbs">
-              <span 
-                className="breadcrumb-home" 
-                onClick={handleGoHome}
-                role="button"
-                tabIndex={0}
-              >
-                ENT Master
-              </span>
-              {activeTopic && (
-                <>
-                  <span className="breadcrumb-separator">/</span>
-                  <span 
-                    className={`breadcrumb-topic ${activeSubTopic ? 'breadcrumb-clickable' : 'breadcrumb-current'}`}
-                    onClick={() => setActiveSubTopic(null)}
-                    role="button"
-                    tabIndex={0}
-                  >
-                    {activeTopic.name}
-                  </span>
-                </>
-              )}
-              {activeSubTopic && (
-                <>
-                  <span className="breadcrumb-separator">/</span>
-                  <span className="breadcrumb-current">{activeSubTopic.name}</span>
-                </>
-              )}
+              <span className="breadcrumb-brand">ENT Master</span>
+              <span className="breadcrumb-separator">/</span>
+              <span className="breadcrumb-topic">{activeTopic.name}</span>
+              <span className="breadcrumb-separator">/</span>
+              <span className="breadcrumb-current">{activeSubTopic.name}</span>
             </div>
-            {activeSubTopic && (
-              <span className="topic-badge">Study Notes</span>
-            )}
           </div>
           <div className="content-header-right">
-            <button 
-              className="btn-header-home"
-              onClick={handleGoHome}
-              title="Return to Overview"
-            >
-              Overview
-            </button>
+            <span className="topic-badge">Clinical Reference</span>
           </div>
         </header>
 
         <div className="content-body">
-          {!activeTopic ? (
-            <WelcomeScreen 
-              topics={topics} 
-              onSelectTopic={handleSelectTopic} 
-            />
-          ) : activeSubTopic ? (
-            <TopicContent 
-              topic={activeTopic} 
-              subtopic={activeSubTopic} 
-              onBackToSubTopics={handleBackToSubTopics}
-              key={activeSubTopic.id}
-            />
-          ) : (
-            <SubtopicList 
-              topic={activeTopic} 
-              onSelectSubTopic={(sub) => handleSelectSubTopic(activeTopic, sub)} 
-            />
-          )}
+          <TopicContent 
+            topic={activeTopic} 
+            subtopic={activeSubTopic} 
+            key={activeSubTopic.id}
+          />
         </div>
       </main>
     </div>

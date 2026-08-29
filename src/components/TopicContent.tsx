@@ -5,10 +5,9 @@ import MCQPractice from './MCQPractice';
 interface TopicContentProps {
   topic: TopicData;
   subtopic: SubTopicData;
-  onBackToSubTopics: () => void;
 }
 
-export default function TopicContent({ topic, subtopic, onBackToSubTopics }: TopicContentProps) {
+export default function TopicContent({ topic, subtopic }: TopicContentProps) {
   const [activeTab, setActiveTab] = useState<'article' | 'mcq' | 'gallery'>('article');
   const [selectedImage, setSelectedImage] = useState<MedicalImage | null>(null);
 
@@ -18,11 +17,13 @@ export default function TopicContent({ topic, subtopic, onBackToSubTopics }: Top
 
   return (
     <article className="wiki-article-wrapper">
-      {/* Top Breadcrumbs & Action Header */}
+      {/* Top Action Header with Tab Switcher */}
       <div className="wiki-article-top-bar">
-        <button className="wiki-back-btn" onClick={onBackToSubTopics}>
-          ← {topic.name} Sub-Topics
-        </button>
+        <div className="wiki-current-topic-label">
+          <span className="topic-parent-name">{topic.name}</span>
+          <span className="topic-divider">/</span>
+          <span className="subtopic-current-name">{subtopic.name}</span>
+        </div>
 
         <div className="wiki-view-switchers">
           <button 
@@ -92,10 +93,7 @@ export default function TopicContent({ topic, subtopic, onBackToSubTopics }: Top
       ) : !hasNotes ? (
         <div className="wiki-empty-notice">
           <h3>Article in Development</h3>
-          <p>The comprehensive review article for <strong>{subtopic.name}</strong> is currently being drafted.</p>
-          <button className="btn-secondary" onClick={onBackToSubTopics} style={{ marginTop: '16px' }}>
-            Browse Other Subtopics
-          </button>
+          <p>The comprehensive review article for <strong>{subtopic.name}</strong> is currently being drafted. Please select an active subtopic from the sidebar (e.g. <strong>Ear → Myiasis in ENT</strong>).</p>
         </div>
       ) : (
         /* ─── MODERN WIKIPEDIA ARTICLE LAYOUT ─── */
