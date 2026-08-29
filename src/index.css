@@ -1668,15 +1668,359 @@ body {
   cursor: pointer;
 }
 
-.btn-secondary {
-  padding: 8px 16px;
-  background: transparent;
-  color: var(--text-secondary);
+/* ========================================================= */
+/* ===== DRUG DOSAGE & PHARMACOTHERAPY POPOVER ===== */
+/* ========================================================= */
+
+/* Quick Pharmacotherapy Reference Bar */
+.drug-quick-bar {
+  background: var(--bg-secondary);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-sm);
-  font-size: 13px;
+  padding: 10px 14px;
+  margin: 0 0 24px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: var(--shadow-xs);
+}
+
+.drug-bar-label {
+  font-size: 11px;
+  font-weight: 750;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--text-muted);
+}
+
+.drug-chips-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.drug-chip-btn {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
   font-weight: 600;
   cursor: pointer;
+  border: 1px solid #c7d2fe;
+  background: var(--accent-subtle);
+  color: var(--accent);
+  transition: all 120ms ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: inherit;
+}
+
+.drug-chip-btn:hover {
+  background: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+}
+
+/* Inline Clickable Drug Badge in text */
+.inline-drug-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 1px 7px;
+  border-radius: 4px;
+  background: #f0f4ff;
+  border: 1px solid #c7d2fe;
+  color: #3730a3;
+  font-weight: 650;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 120ms ease;
+  vertical-align: baseline;
+  font-family: inherit;
+  margin: 0 2px;
+}
+
+.inline-drug-tag:hover {
+  background: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+}
+
+/* Infobox Drug Link */
+.infobox-drug-link {
+  background: none;
+  border: none;
+  color: var(--text-link);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+  font-family: inherit;
+}
+
+.infobox-drug-link:hover {
+  text-decoration: underline;
+  color: var(--text-link-hover);
+}
+
+/* Drug Modal Dialog */
+.drug-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(3px);
+  z-index: 110;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.drug-modal-content {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  max-width: 580px;
+  width: 100%;
+  max-height: 88vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-color);
+  animation: modalSlideUp 160ms ease-out;
+}
+
+@keyframes modalSlideUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.drug-modal-header {
+  padding: 18px 22px 14px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  background: #fcfdfe;
+}
+
+.drug-class-badge {
+  font-size: 10px;
+  font-weight: 750;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--accent);
+  background: var(--accent-subtle);
+  padding: 2px 7px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-bottom: 4px;
+}
+
+.drug-modal-title {
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.drug-generic-name {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-style: italic;
+  display: block;
+  margin-top: 2px;
+}
+
+.btn-drug-close {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 120ms ease;
+}
+
+.btn-drug-close:hover {
+  background: var(--bg-muted);
+  color: var(--text-primary);
+}
+
+.drug-modal-body {
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.drug-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.drug-section-title {
+  font-size: 12.5px;
+  font-weight: 750;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.drug-icon-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.drug-moa-text {
+  font-size: 13.2px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  background: var(--bg-primary);
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+}
+
+/* Dosage Matrix */
+.drug-dosage-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.dosage-box {
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+}
+
+.adult-box {
+  border-left: 3px solid var(--accent);
+}
+
+.pediatric-box {
+  border-left: 3px solid var(--teal);
+}
+
+.dosage-label {
+  font-size: 10.5px;
+  font-weight: 750;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.dosage-val {
+  font-size: 12.5px;
+  color: var(--text-primary);
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+/* Contraindications */
+.drug-contra-list {
+  padding-left: 18px;
+  margin: 0;
+}
+
+.drug-contra-list li {
+  font-size: 12.8px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 3px;
+}
+
+/* Alert Boxes */
+.drug-alert-box {
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+}
+
+.alert-warning {
+  background: var(--rose-bg);
+  border: 1px solid var(--rose-border);
+  border-left: 4px solid var(--rose);
+}
+
+.alert-warning .alert-title {
+  color: #9f1239;
+  font-size: 10.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.alert-warning .alert-text {
+  font-size: 12.5px;
+  color: #881337;
+  line-height: 1.55;
+  margin-top: 3px;
+}
+
+.alert-pearl {
+  background: var(--bg-pearl);
+  border: 1px solid var(--border-pearl);
+  border-left: 4px solid #16a34a;
+}
+
+.alert-pearl .alert-title {
+  color: #14532d;
+  font-size: 10.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.alert-pearl .alert-text {
+  font-size: 12.5px;
+  color: #14532d;
+  line-height: 1.55;
+  margin-top: 3px;
+}
+
+.drug-modal-footer {
+  padding: 12px 22px;
+  border-top: 1px solid var(--border-color);
+  background: #fcfdfe;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-drug-done {
+  padding: 7px 16px;
+  background: var(--accent);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 120ms ease;
+}
+
+.btn-drug-done:hover {
+  background: var(--accent-hover);
+}
+
+@media (max-width: 600px) {
+  .drug-dosage-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ===== Responsive Breakpoints ===== */

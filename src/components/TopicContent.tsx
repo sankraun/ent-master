@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import type { TopicData, SubTopicData, MedicalImage } from '../data/notes';
+import { medicalDrugs } from '../data/drugs';
+import type { DrugInfo } from '../data/drugs';
 import MCQPractice from './MCQPractice';
+import DrugModal from './DrugModal';
 
 interface TopicContentProps {
   topic: TopicData;
@@ -10,10 +13,47 @@ interface TopicContentProps {
 export default function TopicContent({ topic, subtopic }: TopicContentProps) {
   const [activeTab, setActiveTab] = useState<'article' | 'mcq' | 'gallery'>('article');
   const [selectedImage, setSelectedImage] = useState<MedicalImage | null>(null);
+  const [selectedDrug, setSelectedDrug] = useState<DrugInfo | null>(null);
 
   const hasNotes = subtopic.sections && subtopic.sections.length > 0;
   const hasGallery = subtopic.gallery && subtopic.gallery.length > 0;
   const primaryImage = subtopic.gallery?.[0];
+
+  const handleOpenDrug = (drugKey: string, e?: React.MouseEvent) => {
+    if (e) e.preventDefault();
+    const drug = medicalDrugs[drugKey];
+    if (drug) {
+      setSelectedDrug(drug);
+    }
+  };
+
+  // Helper to highlight and make medication names clickable in bullet points
+  const renderBulletWithDrugLinks = (text: string) => {
+    // Replace drug keywords with clickable badges
+    let formatted = text
+      .replace(/^([A-Z\s—\–\-]{1,25}:)/g, '<strong>$1</strong>')
+      .replace(/^([0-9]+\.\s+[A-Z\s]+—)/g, '<strong>$1</strong>')
+      .replace(/^([A-Z]\s+[—–-]\s+[^:]+:)/g, '<strong>$1</strong>');
+
+    return (
+      <span
+        dangerouslySetInnerHTML={{
+          __html: formatted
+            .replace(/\b(Ivermectin|ivermectin)\b/g, '<button class="inline-drug-tag" data-drug="ivermectin">💊 Ivermectin</button>')
+            .replace(/\b(Turpentine|turpentine)\b/g, '<button class="inline-drug-tag" data-drug="turpentine">🧪 Turpentine Oil</button>')
+            .replace(/\b(Amoxicillin|amoxicillin|penicillin|Penicillin)\b/g, '<button class="inline-drug-tag" data-drug="amoxicillin">💊 Amoxicillin</button>')
+            .replace(/\b(Lidocaine|lidocaine)\b/g, '<button class="inline-drug-tag" data-drug="lidocaine">💉 Lidocaine</button>')
+            .replace(/\b(Liquid paraffin|mineral oil|liquid paraffin|paraffin)\b/g, '<button class="inline-drug-tag" data-drug="paraffin">💧 Liquid Paraffin</button>')
+        }}
+        onClick={(e) => {
+          const target = (e.target as HTMLElement).closest('.inline-drug-tag') as HTMLElement | null;
+          if (target && target.dataset.drug) {
+            handleOpenDrug(target.dataset.drug);
+          }
+        }}
+      />
+    );
+  };
 
   return (
     <article className="wiki-article-wrapper">
@@ -155,6 +195,28 @@ export default function TopicContent({ topic, subtopic }: TopicContentProps) {
               </ol>
             </nav>
 
+            {/* Pharmacotherapy Quick Popover Bar */}
+            <div className="drug-quick-bar">
+              <span className="drug-bar-label">Drug Dosage & Interaction Reference:</span>
+              <div className="drug-chips-wrapper">
+                <button className="drug-chip-btn" onClick={() => handleOpenDrug('ivermectin')}>
+                  💊 Ivermectin (200 µg/kg)
+                </button>
+                <button className="drug-chip-btn" onClick={() => handleOpenDrug('turpentine')}>
+                  🧪 Turpentine Oil (1:4)
+                </button>
+                <button className="drug-chip-btn" onClick={() => handleOpenDrug('amoxicillin')}>
+                  💊 Amoxicillin / Clavulanate
+                </button>
+                <button className="drug-chip-btn" onClick={() => handleOpenDrug('lidocaine')}>
+                  💉 Topical Lidocaine 4%
+                </button>
+                <button className="drug-chip-btn" onClick={() => handleOpenDrug('paraffin')}>
+                  💧 Liquid Paraffin
+                </button>
+              </div>
+            </div>
+
             {/* Inline Article Sections */}
             <div className="wiki-article-body">
               {subtopic.sections.map((section, sIdx) => (
@@ -174,12 +236,9 @@ export default function TopicContent({ topic, subtopic }: TopicContentProps) {
                         {card.bullets && card.bullets.length > 0 && (
                           <ul className="wiki-bullets">
                             {card.bullets.map((b, bIdx) => (
-                              <li key={bIdx} dangerouslySetInnerHTML={{
-                                __html: b
-                                  .replace(/^([A-Z\s—\–\-]{1,25}:)/g, '<strong>$1</strong>')
-                                  .replace(/^([0-9]+\.\s+[A-Z\s]+—)/g, '<strong>$1</strong>')
-                                  .replace(/^([A-Z]\s+[—–-]\s+[^:]+:)/g, '<strong>$1</strong>')
-                              }} />
+                              <li key={bIdx}>
+                                {renderBulletWithDrugLinks(b)}
+                              </li>
                             ))}
                           </ul>
                         )}
@@ -282,15 +341,38 @@ export default function TopicContent({ topic, subtopic }: TopicContentProps) {
                     <td><strong>Atrophic Rhinitis</strong> (Ozena)</td>
                   </tr>
                   <tr className="infobox-category-header">
+                    <th colSpan={2}>Pharmacotherapy</th>
+                  </tr>
+                  <tr>
+                    <th>Systemic Adjunct</th>
+                    <td>
+                      <button className="infobox-drug-link" onClick={() => handleOpenDrug('ivermectin')}>
+                        Ivermectin (200 µg/kg) ↗
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Topical Extractant</th>
+                    <td>
+                      <button className="infobox-drug-link" onClick={() => handleOpenDrug('turpentine')}>
+                        Turpentine Oil (1:4) ↗
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th>Secondary Infection</th>
+                    <td>
+                      <button className="infobox-drug-link" onClick={() => handleOpenDrug('amoxicillin')}>
+                        Amoxicillin/Clavulanate ↗
+                      </button>
+                    </td>
+                  </tr>
+                  <tr className="infobox-category-header">
                     <th colSpan={2}>Management</th>
                   </tr>
                   <tr>
                     <th>First-line</th>
                     <td>Manual/Endoscopic removal under direct vision</td>
-                  </tr>
-                  <tr>
-                    <th>Adjunct Agent</th>
-                    <td>Systemic Ivermectin (~200 µg/kg)</td>
                   </tr>
                   <tr>
                     <th>Rule of Thumb</th>
@@ -345,6 +427,12 @@ export default function TopicContent({ topic, subtopic }: TopicContentProps) {
           </div>
         </div>
       )}
+
+      {/* Interactive Drug Dosage & Interaction Popover Modal */}
+      <DrugModal 
+        drug={selectedDrug} 
+        onClose={() => setSelectedDrug(null)} 
+      />
     </article>
   );
 }
