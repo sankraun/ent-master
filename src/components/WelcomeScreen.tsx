@@ -46,7 +46,7 @@ export default function WelcomeScreen({ topics, onSelectTopic }: WelcomeScreenPr
         <h3 className="section-subtitle">All ENT Topic Modules</h3>
         <div className="welcome-topics">
           {topics.map((topic) => {
-            const hasContent = topic.sections && topic.sections.length > 0;
+            const hasContent = topic.subtopics.some(s => s.isReady);
             return (
               <div
                 key={topic.id}
