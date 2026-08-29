@@ -2082,9 +2082,9 @@ body {
     position: sticky;
     top: 0;
     z-index: 5;
-    padding: 0 16px;
-    height: 52px;
-    min-height: 52px;
+    padding: 0 14px;
+    height: 50px;
+    min-height: 50px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -2103,8 +2103,13 @@ body {
     transform: translateX(-50%);
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 7px;
     user-select: none;
+  }
+
+  .mobile-brand-title {
+    font-size: 14.5px;
+    font-weight: 800;
   }
 
   .desktop-only {
@@ -2135,6 +2140,199 @@ body {
   }
 
   .content-body {
-    padding: 16px 14px;
+    padding: 12px 14px 60px;
+  }
+
+  /* De-congest Article Top Bar & Tabs on Mobile */
+  .wiki-article-top-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 16px;
+  }
+
+  .wiki-current-topic-label {
+    font-size: 12px;
+  }
+
+  .wiki-view-switchers {
+    display: flex;
+    width: 100%;
+    background: var(--bg-muted);
+    padding: 3px;
+    border-radius: var(--radius-sm);
+    gap: 3px;
+  }
+
+  .wiki-switcher-btn {
+    flex: 1;
+    text-align: center;
+    padding: 7px 6px;
+    font-size: 11.5px;
+    border: none;
+    border-radius: 4px;
+    background: transparent;
+    white-space: nowrap;
+  }
+
+  .wiki-switcher-btn.switcher-active {
+    background: var(--bg-secondary);
+    color: var(--accent);
+    box-shadow: var(--shadow-xs);
+    font-weight: 750;
+  }
+
+  .wiki-mcq-btn {
+    background: transparent;
+    color: var(--accent);
+    border: none;
+  }
+
+  .wiki-mcq-btn.switcher-active {
+    background: var(--accent);
+    color: #ffffff;
+  }
+
+  /* Article Title Row */
+  .wiki-title-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+  }
+
+  .wiki-title {
+    font-size: 22px;
+    line-height: 1.25;
+  }
+
+  .wiki-high-yield-badge {
+    font-size: 10px;
+    padding: 2px 6px;
+  }
+
+  .wiki-lead-summary p {
+    font-size: 13.5px;
+    line-height: 1.65;
+  }
+
+  /* Horizontal Swipeable Drug Reference Strip */
+  .drug-quick-bar {
+    padding: 8px 10px;
+    margin-bottom: 18px;
+  }
+
+  .drug-bar-label {
+    font-size: 10px;
+  }
+
+  .drug-chips-wrapper {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+    gap: 6px;
+  }
+
+  .drug-chip-btn {
+    flex-shrink: 0;
+    font-size: 11px;
+    padding: 4px 8px;
+  }
+
+  /* Table of Contents Full Width */
+  .wiki-toc-box {
+    width: 100%;
+    max-width: 100%;
+    margin: 14px 0 20px;
+    padding: 12px 14px;
+  }
+
+  .wiki-toc-title {
+    font-size: 12px;
+  }
+
+  .wiki-toc-item {
+    font-size: 12.5px;
+  }
+
+  /* Section Headers & Text */
+  .wiki-section {
+    margin-bottom: 24px;
+  }
+
+  .wiki-section-h2 {
+    font-size: 17px;
+    margin: 20px 0 12px;
+  }
+
+  .wiki-subblock-h3 {
+    font-size: 14.5px;
+    margin: 12px 0 6px;
+  }
+
+  .wiki-paragraph {
+    font-size: 13.5px;
+    line-height: 1.68;
+  }
+
+  .wiki-bullets {
+    padding-left: 18px;
+    margin: 8px 0 12px;
+  }
+
+  .wiki-bullets li {
+    font-size: 13px;
+    line-height: 1.68;
+  }
+
+  .wiki-callout-pearl {
+    padding: 10px 12px;
+    margin: 12px 0 14px;
+  }
+
+  .callout-pearl-body {
+    font-size: 12.8px;
+  }
+
+  .inline-drug-tag {
+    font-size: 11px;
+    padding: 1px 5px;
+    margin: 1px 1px;
+  }
+
+  /* Summary Box */
+  .wiki-summary-box {
+    padding: 16px;
+    margin-top: 24px;
+  }
+
+  .btn-wiki-mcq-launch {
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+  }
+
+  /* Modal popovers */
+  .drug-modal-content {
+    max-height: 85vh;
+  }
+
+  .drug-modal-header {
+    padding: 14px 16px;
+  }
+
+  .drug-modal-body {
+    padding: 14px 16px;
+  }
+
+  .drug-modal-title {
+    font-size: 17px;
+  }
+
+  .drug-dosage-grid {
+    grid-template-columns: 1fr;
   }
 }
