@@ -1734,18 +1734,37 @@ body {
 }
 
 @media (max-width: 768px) {
-  .mobile-header-brand {
+  .content-header {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    padding: 0 16px;
+    height: 52px;
+    min-height: 52px;
     display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .content-header-left {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .mobile-header-brand {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    user-select: none;
   }
 
   .desktop-only {
     display: none !important;
-  }
-
-  .content-header {
-    padding: 0 14px;
-    height: 52px;
-    min-height: 52px;
   }
 
   .sidebar {
@@ -1768,6 +1787,7 @@ body {
 
   .menu-toggle {
     display: flex;
+    z-index: 2;
   }
 
   .content-body {
